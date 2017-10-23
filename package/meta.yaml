@@ -1,0 +1,17 @@
+package:
+  name:  ictbilling
+  version: 1.0
+
+source:
+   path: ../src
+
+build:
+  number: 0
+
+requirements:
+  run:
+    - openpyxl
+
+about:
+  home: https://www.imperial.ac.uk/ict/rcs
+  license: "All rights reserved"
