@@ -3,7 +3,7 @@ import os
 import copy
 
 class GL:
-	def __init__( self, company="IC", cost_centre="ITSO", activity="G80410", analysis="165128", subanalysis1 = "AHO", subanalysis2 = "0", description = "Research Computing Service Recharge" ):
+	def __init__( self, company="IC", cost_centre="ITSO", activity="G80410", analysis="165128", subanalysis1 = "0", subanalysis2 = "0", description = "Research Computing Service Recharge" ):
 		if not isinstance (company, str) :
 			raise Exception("company is not a string")
 		if not isinstance( cost_centre, str) :
