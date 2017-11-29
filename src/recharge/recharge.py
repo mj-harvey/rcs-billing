@@ -63,24 +63,29 @@ class Recharge:
 		sheet = wb["Sheet1"]
 
 
+		ntxn = len(self.transactions)
+		# footer offset from line 23
+		offs = 10
 		# copy footer
-		for row in [25, 26]: 
-			for col in "ABCDEFGHIJKLMNO":
-				sheet["%s%d" % ( col, row + len(self.transactions)*2-2) ].value = sheet[ "%s%d" % ( col, row ) ].value
-				sheet["%s%d" % ( col, row + len(self.transactions)*2-2) ].style = sheet[ "%s%d" % ( col, row) ].style
-				sheet["%s%d" % ( col, row + len(self.transactions)*2-2) ].border    = copy.copy( sheet[ "%s%d" % ( col, row) ].border )
-				sheet["%s%d" % ( col, row + len(self.transactions)*2-2) ].number_format    = copy.copy( sheet[ "%s%d" % ( col, row) ].number_format )
-				sheet["%s%d" % ( col, row + len(self.transactions)*2-2) ].fill      = copy.copy( sheet[ "%s%d" % ( col, row) ].fill )
-				sheet["%s%d" % ( col, row + len(self.transactions)*2-2) ].alignment = copy.copy( sheet[ "%s%d" % ( col, row) ].alignment )
-				sheet["%s%d" % ( col, row + len(self.transactions)*2-2) ].font  = copy.copy( sheet[ "%s%d" % ( col, row) ].font )
+		if ntxn > 5:
+			for row in [23, 24]: 
+				for col in "ABCDEFGHIJKLMNO":
+					sheet["%s%d" % ( col, row + ntxn*2) ].value = sheet[ "%s%d" % ( col, row + offs ) ].value
+					sheet["%s%d" % ( col, row + ntxn*2) ].style = sheet[ "%s%d" % ( col, row + offs ) ].style
+					sheet["%s%d" % ( col, row + ntxn*2) ].border    = copy.copy( sheet[ "%s%d" % ( col, row + offs ) ].border )
+					sheet["%s%d" % ( col, row + ntxn*2) ].number_format    = copy.copy( sheet[ "%s%d" % ( col, row + offs ) ].number_format )
+					sheet["%s%d" % ( col, row + ntxn*2) ].fill      = copy.copy( sheet[ "%s%d" % ( col, row + offs ) ].fill )
+					sheet["%s%d" % ( col, row + ntxn*2) ].alignment = copy.copy( sheet[ "%s%d" % ( col, row + offs ) ].alignment )
+					sheet["%s%d" % ( col, row + ntxn*2) ].font  = copy.copy( sheet[ "%s%d" % ( col, row + offs ) ].font )
 
 
-		sheet[ "J%d" % (23 + len(self.transactions)*2) ].value = "=SUM(J23:J%d)" % ( 24 + len(self.transactions)*2 - 2)
-		sheet[ "K%d" % (23 + len(self.transactions)*2) ].value = "=SUM(K23:K%d)" % ( 24 + len(self.transactions)*2 - 2)
+			sheet[ "J%d" % (23 + ntxn*2) ].value = "=SUM(J23:J%d)" % ( 23 + ntxn*2 - 1 )
+			sheet[ "K%d" % (23 + ntxn*2) ].value = "=SUM(K23:K%d)" % ( 23 + ntxn*2 - 1 )
+
 		sheet[ "E12" ] = "=TODAY()"
 		sheet[ "E14" ] = sheet[ "E16" ] = self.description
 
-		for row in range( 1, len(self.transactions )):
+		for row in range( ntxn ):
 			for i in [23, 24]:
 				for col in "ABCDEFGHIJKLMNO":
 					sheet["%s%d" % ( col, i + (row * 2 )) ].value = sheet[ "%s%d" % ( col, i  ) ].value
@@ -129,9 +134,12 @@ class Recharge:
 if __name__ == "__main__":
 	print("Hello")	
 	r = Recharge( description="Recharge for CX2 compute time" , destination = GL( cost_centre="ITSO", activity ="G80410", analysis="165128" ) )
-#	src = GL( cost_centre="MEDY", activity = "F46000" )
+	src = GL( cost_centre="MEDY", activity = "F46000" )
 #	r.addTransaction( src, 21340.00, "R29598  1152 cores (72 16c nodes) for 60 days @ 355.70/day" )
 #	r.addTransaction( src, 5954.17,  "R44565  624 cores (26 24c nodes) for 31 days @ 192.07/day: 5,954.17" )
 #	r.addTransaction( src, 2688.98,  "R51372  624 cores (26 24c nodes) for 14 days @ 192.07/day: 2,688.98" )
+#	r.addTransaction( src, 3688.98,  "R51372  624 cores (26 24c nodes) for 14 days @ 192.07/day: 2,688.98" )
+#	r.addTransaction( src, 4688.98,  "R51372  624 cores (26 24c nodes) for 14 days @ 192.07/day: 2,688.98" )
+#	r.addTransaction( src, 5688.98,  "R51372  624 cores (26 24c nodes) for 14 days @ 192.07/day: 2,688.98" )
 
 	r.writeOutput( "/tmp/mehdi-recharge.xlsm" )
